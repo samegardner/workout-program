@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Workout</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --card2: #f0f0f2;
+    --border: #e0e0e2;
+    --text: #1a1a1a;
+    --sub: #555;
+    --muted: #999;
+    --accent: #3478c6;
+    --accent-dim: #e8f0fa;
+    --green: #2d8a4e;
+    --orange: #b07830;
+    --red: #c0392b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6;
+    padding: 0 0 calc(40px + env(safe-area-inset-bottom, 0px));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .hdr { padding: calc(16px + env(safe-area-inset-top, 48px)) 20px 16px; text-align: center; border-bottom: 1px solid var(--border); max-width: 420px; margin: 0 auto }
+  .hdr h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px }
+  .hdr p { font-size: 11px; color: var(--muted); margin-top: 4px }
+
+  /* Nav */
+  .nav {
+    display: flex; gap: 6px;
+    padding: 12px 16px;
+    padding-left: calc(16px + env(safe-area-inset-left, 0px));
+    padding-right: calc(16px + env(safe-area-inset-right, 0px));
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    position: sticky; top: 0; background: var(--bg);
+    z-index: 100; border-bottom: 1px solid var(--border);
+    max-width: 420px; margin: 0 auto;
+  }
+  .nav a {
+    flex-shrink: 0; padding: 10px 16px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 20px;
+    color: var(--sub); text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent) }
+  .nav-sub { display: block; font-size: 10px; font-weight: 500; opacity: 0.6; margin-top: 1px }
+
+  /* Day sections */
+  .sec { padding: 8px 16px; max-width: 420px; margin: 0 auto }
+  .sec.day { display: none }
+  .sec.day.visible { display: block }
+  .dh {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 20px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 16px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .dh:active { background: var(--card2) }
+  .dh h2 { font-size: 17px; font-weight: 700 }
+  .dh .sub { font-size: 11px; color: var(--muted); margin-top: 2px }
+  .dh .chev { font-size: 14px; color: var(--muted); transition: transform 0.3s }
+  .dh.open .chev { transform: rotate(90deg) }
+  .dc { display: none; padding-top: 12px }
+  .dc.open { display: block }
+
+  /* Station labels */
+  .stn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 0 8px; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
+  }
+  .stn::before, .stn::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .stn:first-child { padding-top: 4px }
+
+  /* Exercise cards */
+  .ex {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; margin-bottom: 12px; padding: 18px 20px;
+  }
+  .ex-top { display: flex; align-items: center; gap: 10px }
+  .ex-name { font-size: 16px; font-weight: 700; line-height: 1.3; flex: 1 }
+  .ex-sets {
+    font-size: 17px; font-weight: 800; color: var(--text);
+    white-space: nowrap; letter-spacing: -0.3px;
+    flex-shrink: 0;
+  }
+  .ex-i {
+    position: relative;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-size: 14px; font-weight: 700;
+    font-style: italic; font-family: Georgia, 'Times New Roman', serif;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.2s;
+  }
+  .ex-i::before {
+    content: ''; position: absolute;
+    top: -6px; right: -6px; bottom: -6px; left: -6px;
+  }
+  .ex-i:active, .ex-i.open { background: var(--accent-dim); border-color: var(--accent); color: var(--accent) }
+  .ex-meta {
+    font-size: 13px; color: var(--muted); margin-top: 12px;
+    font-weight: 600; letter-spacing: 0.2px;
+  }
+
+  /* Detail panel */
+  .ex-detail {
+    display: none; margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 13px; line-height: 1.7;
+  }
+  .ex-detail.open { display: block }
+  .ex-imgs {
+    display: flex; gap: 8px; margin-bottom: 14px;
+    align-items: center; justify-content: center;
+  }
+  .ex-imgs img {
+    width: 46%; max-width: 160px; border-radius: 8px;
+    background: var(--card2); aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .ex-imgs .arrow { color: var(--muted); font-size: 18px; flex-shrink: 0 }
+  .dl { margin-bottom: 12px }
+  .dl:last-child { margin-bottom: 0 }
+  .dl-l {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--accent); margin-bottom: 4px;
+  }
+  .dl ul { padding-left: 18px }
+  .dl li { margin-bottom: 3px; color: var(--sub) }
+  .dl .mis { color: var(--red) }
+  .dl .feel { color: var(--green) }
+  .dl .swap { color: var(--orange); font-style: italic }
+
+  /* Treadmill */
+  .run {
+    text-align: center; padding: 12px; font-size: 12px;
+    color: var(--muted); font-style: italic;
+    border-top: 1px solid var(--border); margin-top: 8px;
+  }
+
+  /* Info cards (nutrition, progression) */
+  .info {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 20px; margin-bottom: 12px;
+  }
+  .info h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px }
+  .info p, .info li { font-size: 13px; color: var(--sub); line-height: 1.7 }
+  .info li { margin-left: 18px; margin-bottom: 4px }
+  .hl { color: var(--accent); font-weight: 600 }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar { display: none }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>5-Day Program</h1>
+  <p>Tap <i style="font-family:Georgia;font-weight:700">i</i> on any exercise for form details.</p>
+</div>
+
+<nav class="nav">
+  <a href="#mon">Mon <span class="nav-sub">Push</span></a>
+  <a href="#tue">Tue <span class="nav-sub">Pull</span></a>
+  <a href="#wed">Wed <span class="nav-sub">Legs</span></a>
+  <a href="#thu">Thu <span class="nav-sub">Upper</span></a>
+  <a href="#fri">Fri <span class="nav-sub">Legs</span></a>
+  <a href="#food">Food</a>
+  <a href="#prog">Progress</a>
+</nav>
+
+<!-- ============ MONDAY: PUSH ============ -->
+<div class="sec day" id="mon">
+
+    <div class="stn">Barbell Rack</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Bench Press</div>
+        <div class="ex-sets">4 x 6-8</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-35 lb/side &nbsp;|&nbsp; Rest 2-3 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Dumbbell bench press or machine chest press</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Incline Dumbbell Press</div>
+        <div class="ex-sets">3 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">30-40 lb each &nbsp;|&nbsp; Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Incline barbell press or incline machine press</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Lateral Raises</div>
+        <div class="ex-sets">3 x 12-15</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">12-15 lb each &nbsp;|&nbsp; Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Cable lateral raises</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Cable Machine</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Cable Flyes</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Pec deck or dumbbell flyes</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Tricep Pushdowns</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Overhead tricep extension or skull crushers</div></div>
+      </div>
+    </div>
+
+    <div class="run">5K treadmill at easy pace</div>
+</div>
+
+<!-- ============ TUESDAY: PULL ============ -->
+<div class="sec day" id="tue">
+
+    <div class="stn">Barbell Rack</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Barbell Rows</div>
+        <div class="ex-sets">4 x 6-8</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-35 lb/side &nbsp;|&nbsp; Rest 2-3 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Dumbbell rows or T-bar rows</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Cable Machine</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Lat Pulldowns</div>
+        <div class="ex-sets">3 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Pull-ups or assisted pull-ups</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Seated Cable Rows</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Chest-supported dumbbell rows</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Face Pulls</div>
+        <div class="ex-sets">3 x 15-20</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Reverse cable flyes or band pull-aparts</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Dumbbell Curls</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">20-25 lb each &nbsp;|&nbsp; Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">EZ-bar curls or hammer curls</div></div>
+      </div>
+    </div>
+
+    <div class="run">5K treadmill at easy pace</div>
+</div>
+
+<!-- ============ WEDNESDAY: LEGS A (Quad + Glute Focus) ============ -->
+<div class="sec day" id="wed">
+
+    <div class="stn">Barbell Rack</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Barbell Squat</div>
+        <div class="ex-sets">4 x 6-8</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-45 lb/side &nbsp;|&nbsp; Rest 2-3 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Goblet squat or leg press</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Barbell Hip Thrust</div>
+        <div class="ex-sets">4 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-45 lb/side &nbsp;|&nbsp; Rest 2-3 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Glute bridge with dumbbell or Smith machine hip thrust</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Bulgarian Split Squats</div>
+        <div class="ex-sets">3 x 10-12 each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">20-30 lb each &nbsp;|&nbsp; Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bulgarian_Split_Squat/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bulgarian_Split_Squat/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Walking lunges or reverse lunges</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Leg Machines</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Leg Press</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Hack squat or Smith machine squat</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Calf Raises</div>
+        <div class="ex-sets">4 x 12-15</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Seated calf raises</div></div>
+      </div>
+    </div>
+
+    <div class="run">5K treadmill. Walk 3-5 min first, then ease in. Slow pace is fine today.</div>
+</div>
+
+<!-- ============ THURSDAY: UPPER ============ -->
+<div class="sec day" id="thu">
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Dumbbell Overhead Press</div>
+        <div class="ex-sets">3 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-35 lb each &nbsp;|&nbsp; Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Barbell overhead press or machine shoulder press</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Dumbbell Bench Press</div>
+        <div class="ex-sets">3 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">35-45 lb each &nbsp;|&nbsp; Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Machine chest press</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Cable Machine</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Cable Rows</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Single-arm dumbbell rows</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Straight-Arm Pulldowns</div>
+        <div class="ex-sets">3 x 12-15</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Dumbbell_Pullover/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Straight-Arm_Dumbbell_Pullover/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Dumbbell pullovers</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Hammer Curls</div>
+        <div class="ex-sets">2 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">20-25 lb each &nbsp;|&nbsp; Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Incline dumbbell curls</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Overhead Tricep Extension</div>
+        <div class="ex-sets">2 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_One-Arm_Triceps_Extension/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_One-Arm_Triceps_Extension/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Dips or close-grip push-ups</div></div>
+      </div>
+    </div>
+
+    <div class="run">5K treadmill at easy pace</div>
+</div>
+
+<!-- ============ FRIDAY: LEGS B (Posterior Chain + Glute Focus) ============ -->
+<div class="sec day" id="fri">
+
+    <div class="stn">Barbell Rack</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Romanian Deadlift</div>
+        <div class="ex-sets">4 x 8-10</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-45 lb/side &nbsp;|&nbsp; Rest 2-3 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Dumbbell RDLs or single-leg RDLs</div></div>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Hip Thrust</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">25-35 lb/side &nbsp;|&nbsp; Rest 2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Cable pull-throughs or glute bridge</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Dumbbells</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Step-Ups</div>
+        <div class="ex-sets">3 x 10-12 each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">20-30 lb each &nbsp;|&nbsp; Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Step_Ups/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Step_Ups/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Reverse lunges or walking lunges</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Leg Machines</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Leg Curls</div>
+        <div class="ex-sets">3 x 10-12</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Rest 1-2 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Nordic curls or Swiss ball curls</div></div>
+      </div>
+    </div>
+
+    <div class="stn">Pull-Up Bar</div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-sets">3 x 12-15</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Bodyweight &nbsp;|&nbsp; Rest 1 min</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="dl"><div class="dl-l">Swap</div><div class="swap">Cable crunches or decline sit-ups</div></div>
+      </div>
+    </div>
+
+    <div class="run">5K treadmill. Last of the week, push the pace if you're feeling it.</div>
+</div>
+
+<!-- ============ NUTRITION ============ -->
+<div class="sec" id="food">
+  <div class="dh" onclick="td(this)">
+    <div><h2>Nutrition + Supplements</h2><div class="sub">What to eat, what to buy</div></div>
+    <span class="chev">&#x276F;</span>
+  </div>
+  <div class="dc">
+    <div class="info">
+      <h3>Daily Targets</h3>
+      <ul>
+        <li><span class="hl">Calories: 2,200-2,400/day</span> (slight deficit for recomp)</li>
+        <li><span class="hl">Protein: 140-150g/day</span> (non-negotiable)</li>
+        <li>Carbs: 200-250g/day (fuel for lifting + running)</li>
+        <li>Fat: 55-70g/day</li>
+      </ul>
+    </div>
+    <div class="info">
+      <h3>Buy These</h3>
+      <ul>
+        <li><span class="hl">Whey protein</span> &mdash; 1 scoop post-workout. ON Gold Standard or Dymatize ISO100.</li>
+        <li><span class="hl">Creatine monohydrate</span> &mdash; 5g/day, every day. ~$15 for 2 months. Plain unflavored.</li>
+      </ul>
+    </div>
+    <div class="info">
+      <h3>Nice to Have</h3>
+      <ul>
+        <li><span class="hl">Pre-workout or caffeine pills</span> &mdash; 200-300mg, 30 min before. Or just coffee.</li>
+        <li><span class="hl">Vitamin D3</span> &mdash; 2000-5000 IU/day.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PROGRESSION ============ -->
+<div class="sec" id="prog">
+  <div class="dh" onclick="td(this)">
+    <div><h2>Progression + Recovery</h2><div class="sub">How to get stronger every week</div></div>
+    <span class="chev">&#x276F;</span>
+  </div>
+  <div class="dc">
+    <div class="info">
+      <h3>Ramp-Up (Weeks 1-4)</h3>
+      <ul>
+        <li><span class="hl">Weeks 1-2:</span> ~60-65% effort. Nail the form.</li>
+        <li><span class="hl">Week 3:</span> ~80% effort. Find your working weights.</li>
+        <li><span class="hl">Week 4+:</span> Full working weights. Double progression begins.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--sub)">Muscle memory is real. Expect rapid gains for 4-8 weeks.</p>
+    </div>
+    <div class="info">
+      <h3>Double Progression</h3>
+      <p><span class="hl">Compounds</span> (bench, squat, rows, OHP):</p>
+      <ul>
+        <li>Start at a weight you can do for sets of 6</li>
+        <li>Add reps each session until you hit sets of 8</li>
+        <li>Add 5 lbs (upper) or 10 lbs (lower), reset to 6</li>
+        <li>Stalled 2+ sessions? Drop 10%, rebuild</li>
+      </ul>
+      <p style="margin-top:10px"><span class="hl">Accessories:</span> Same idea, smallest increment at the top of the rep range.</p>
+    </div>
+    <div class="info">
+      <h3>4-Week Targets</h3>
+      <ul>
+        <li>Bench: <span class="hl">+15-20 lbs</span></li>
+        <li>Squat: <span class="hl">+20-30 lbs</span></li>
+        <li>Rows: <span class="hl">+15-20 lbs</span></li>
+        <li>OHP: <span class="hl">+10-15 lbs</span></li>
+      </ul>
+    </div>
+    <div class="info">
+      <h3>Recovery</h3>
+      <ul>
+        <li>Saturday + Sunday: Full rest.</li>
+        <li>Sleep: 7-9 hours. Non-negotiable.</li>
+        <li>Beat up mid-week? Cut the 5K or drop 1-2 sets.</li>
+      </ul>
+    </div>
+    <div class="info">
+      <h3>Warmup (Every Session, 5 min)</h3>
+      <p>Arm circles (15 each way) &#8594; Band pull-aparts (15) &#8594; Hip circles (10 each) &#8594; Bodyweight squats (10) &#8594; 1 light set of first exercise at 50%</p>
+    </div>
+    <div class="info">
+      <h3>Tracking</h3>
+      <p>Download <span class="hl">Hevy</span> (free, iOS). Build these 5 routines. Log every set. It tracks progressive overload automatically.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Toggle collapsible sections (Food, Progress)
+function td(h) {
+  h.classList.toggle('open');
+  h.nextElementSibling.classList.toggle('open');
+}
+
+// Toggle exercise detail panel
+function ti(btn) {
+  const card = btn.closest('.ex');
+  const det = card.querySelector('.ex-detail');
+  btn.classList.toggle('open');
+  det.classList.toggle('open');
+}
+
+// Show a specific day or section
+function showTab(id) {
+  const dayIds = ['mon','tue','wed','thu','fri'];
+
+  // Hide all day sections
+  document.querySelectorAll('.sec.day').forEach(s => s.classList.remove('visible'));
+
+  // Show/hide Food + Progress based on whether a day is selected
+  const foodSec = document.getElementById('food');
+  const progSec = document.getElementById('prog');
+
+  if (dayIds.includes(id)) {
+    // Show selected day, hide Food/Progress
+    const el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+    if (foodSec) foodSec.style.display = 'none';
+    if (progSec) progSec.style.display = 'none';
+  } else {
+    // Food or Progress tab: hide all days, show those sections
+    if (foodSec) foodSec.style.display = '';
+    if (progSec) progSec.style.display = '';
+
+    // Auto-expand the tapped one
+    const target = document.getElementById(id);
+    if (target) {
+      const dh = target.querySelector('.dh');
+      if (dh && !dh.classList.contains('open')) {
+        dh.classList.add('open');
+        dh.nextElementSibling.classList.add('open');
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Update active nav pill
+  document.querySelectorAll('.nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+  });
+}
+
+// Nav click handlers
+document.querySelectorAll('.nav a').forEach(l => {
+  l.addEventListener('click', function(e) {
+    e.preventDefault();
+    const id = this.getAttribute('href').slice(1);
+    showTab(id);
+  });
+});
+
+// Auto-open today's workout on load
+const dayMap = { 0: 'mon', 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'mon' };
+showTab(dayMap[new Date().getDay()]);
+</script>
+
+</body>
+</html>
