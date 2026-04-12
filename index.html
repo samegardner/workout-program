@@ -200,7 +200,6 @@
   <a href="#wed">Wed <span class="nav-sub">Legs</span></a>
   <a href="#thu">Thu <span class="nav-sub">Upper</span></a>
   <a href="#fri">Fri <span class="nav-sub">Legs</span></a>
-  <a href="#prog">Progress</a>
 </nav>
 
 <!-- ============ MONDAY: PUSH ============ -->
@@ -937,68 +936,7 @@
     </div>
 </div>
 
-<!-- ============ PROGRESSION ============ -->
-<div class="sec" id="prog">
-  <div class="dh" onclick="td(this)">
-    <div><h2>Progression + Recovery</h2><div class="sub">How to get stronger every week</div></div>
-    <span class="chev">&#x276F;</span>
-  </div>
-  <div class="dc">
-    <div class="info">
-      <h3>Ramp-Up (Weeks 1-4)</h3>
-      <ul>
-        <li><span class="hl">Weeks 1-2:</span> ~60-65% effort. Nail the form.</li>
-        <li><span class="hl">Week 3:</span> ~80% effort. Find your working weights.</li>
-        <li><span class="hl">Week 4+:</span> Full working weights. Double progression begins.</li>
-      </ul>
-      <p style="margin-top:8px;color:var(--sub)">Muscle memory is real. Expect rapid gains for 4-8 weeks.</p>
-    </div>
-    <div class="info">
-      <h3>Double Progression</h3>
-      <p><span class="hl">Compounds</span> (bench, squat, rows, OHP):</p>
-      <ul>
-        <li>Start at a weight you can do for sets of 6</li>
-        <li>Add reps each session until you hit sets of 8</li>
-        <li>Add 5 lbs (upper) or 10 lbs (lower), reset to 6</li>
-        <li>Stalled 2+ sessions? Drop 10%, rebuild</li>
-      </ul>
-      <p style="margin-top:10px"><span class="hl">Accessories:</span> Same idea, smallest increment at the top of the rep range.</p>
-    </div>
-    <div class="info">
-      <h3>4-Week Targets</h3>
-      <ul>
-        <li>Bench: <span class="hl">+15-20 lbs</span></li>
-        <li>Squat: <span class="hl">+20-30 lbs</span></li>
-        <li>Rows: <span class="hl">+15-20 lbs</span></li>
-        <li>OHP: <span class="hl">+10-15 lbs</span></li>
-      </ul>
-    </div>
-    <div class="info">
-      <h3>Recovery</h3>
-      <ul>
-        <li>Saturday + Sunday: Full rest.</li>
-        <li>Sleep: 7-9 hours. Non-negotiable.</li>
-        <li>Beat up mid-week? Cut the 5K or drop 1-2 sets.</li>
-      </ul>
-    </div>
-    <div class="info">
-      <h3>Warmup (Every Session, 5 min)</h3>
-      <p>Arm circles (15 each way) &#8594; Band pull-aparts (15) &#8594; Hip circles (10 each) &#8594; Bodyweight squats (10) &#8594; 1 light set of first exercise at 50%</p>
-    </div>
-    <div class="info">
-      <h3>Tracking</h3>
-      <p>Download <span class="hl">Hevy</span> (free, iOS). Build these 5 routines. Log every set. It tracks progressive overload automatically.</p>
-    </div>
-  </div>
-</div>
-
 <script>
-// Toggle collapsible sections (Food, Progress)
-function td(h) {
-  h.classList.toggle('open');
-  h.nextElementSibling.classList.toggle('open');
-}
-
 // Toggle exercise detail panel (only one open at a time)
 function ti(btn) {
   const card = btn.closest('.ex');
@@ -1016,34 +954,12 @@ function ti(btn) {
   }
 }
 
-// Show a specific day or section
+// Show a specific day
 function showTab(id) {
-  const dayIds = ['mon','tue','wed','thu','fri'];
-
-  // Hide all day sections
   document.querySelectorAll('.sec.day').forEach(s => s.classList.remove('visible'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('visible');
 
-  const progSec = document.getElementById('prog');
-
-  if (dayIds.includes(id)) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('visible');
-    if (progSec) progSec.style.display = 'none';
-  } else {
-    if (progSec) progSec.style.display = '';
-
-    const target = document.getElementById(id);
-    if (target) {
-      const dh = target.querySelector('.dh');
-      if (dh && !dh.classList.contains('open')) {
-        dh.classList.add('open');
-        dh.nextElementSibling.classList.add('open');
-      }
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  // Update active nav pill
   document.querySelectorAll('.nav a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === '#' + id);
   });
