@@ -154,24 +154,6 @@
     border-top: 1px solid var(--border); margin-top: 8px;
   }
 
-  /* Stretches */
-  .stretch-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; margin-bottom: 12px; padding: 16px 20px;
-  }
-  .stretch-card .ex-top { display: flex; align-items: center; justify-content: space-between }
-  .stretch-card .ex-name { font-size: 15px; font-weight: 600; line-height: 1.3 }
-  .stretch-card .ex-meta { font-size: 13px; color: var(--muted); margin-top: 6px }
-  .stretch-card .str-imgs {
-    display: flex; gap: 8px; margin-top: 10px;
-    align-items: center; justify-content: center;
-  }
-  .stretch-card .str-imgs img {
-    width: 46%; max-width: 140px; border-radius: 8px;
-    background: var(--card2); aspect-ratio: 1;
-    object-fit: cover;
-  }
-  .stretch-card .str-imgs .arrow { color: var(--muted); font-size: 18px; flex-shrink: 0 }
 
   /* Info cards (nutrition, progression) */
   .info {
@@ -298,49 +280,79 @@
 
     <div class="stn">Stretches (hold each 30 sec)</div>
 
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Doorway Chest Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Doorway Chest Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Arm on door frame at 90&deg;, lean through. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Cross-Body Shoulder Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Cross-Body Shoulder Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Pull arm across chest with opposite hand. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Round_The_World_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Round_The_World_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Overhead Tricep Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Overhead Tricep Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Reach hand behind head, press elbow down with other hand. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Quad Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Quad Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Pull heel to glute, keep knees together. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Calf Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Calf Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Stagger feet, press back heel into floor. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
 </div>
@@ -441,49 +453,79 @@
 
     <div class="stn">Stretches (hold each 30 sec)</div>
 
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Lat Hang / Dead Hang</div></div>
-      <div class="ex-meta">Hang from pull-up bar, relax and let lats stretch. 30-45 sec.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Lat Hang / Dead Hang</div>
+        <div class="ex-sets">30-45 sec</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
+      <div class="ex-meta">Hang from pull-up bar, relax and let lats stretch.</div>
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Handed_Hang/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Handed_Hang/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Seated Forward Fold</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Seated Forward Fold</div>
+        <div class="ex-sets">30 sec</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Legs straight, reach for toes. Stretches hamstrings and lower back.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Bicep Wall Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Bicep Wall Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Arm flat on wall behind you, turn body away. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Behind_Head_Chest_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Behind_Head_Chest_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Child's Pose</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Child's Pose</div>
+        <div class="ex-sets">30 sec</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Knees wide, arms extended, sink hips back. Opens lats and upper back.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Calf Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Calf Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Stagger feet, press back heel into floor. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
 </div>
@@ -584,49 +626,79 @@
 
     <div class="stn">Stretches (hold each 30 sec)</div>
 
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Quad Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Quad Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Pull heel to glute, keep knees together. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Kneeling Hip Flexor Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Kneeling Hip Flexor Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Lunge position, push hips forward. Squeeze back glute. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Seated Figure-4 (Pigeon)</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Seated Figure-4 (Pigeon)</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Ankle on opposite knee, lean forward. Opens glutes. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Hamstring Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Hamstring Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Foot on bench, hinge at hips with flat back. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hamstring_and_Calf_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hamstring_and_Calf_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Calf Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Calf Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Stagger feet, press back heel into floor. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
 </div>
@@ -744,49 +816,79 @@
 
     <div class="stn">Stretches (hold each 30 sec)</div>
 
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Doorway Chest Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Doorway Chest Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Arm on door frame at 90&deg;, lean through. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Child's Pose</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Child's Pose</div>
+        <div class="ex-sets">30 sec</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Knees wide, arms extended, sink hips back. Opens lats and upper back.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Cross-Body Shoulder Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Cross-Body Shoulder Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Pull arm across chest with opposite hand. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Round_The_World_Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Round_The_World_Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Bicep Wall Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Bicep Wall Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Arm flat on wall behind you, turn body away. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Behind_Head_Chest_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Behind_Head_Chest_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Overhead Tricep Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Overhead Tricep Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Reach hand behind head, press elbow down with other hand. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
 </div>
@@ -889,49 +991,79 @@
 
     <div class="stn">Stretches (hold each 30 sec)</div>
 
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Hamstring Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Hamstring Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Foot on bench, hinge at hips with flat back. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hamstring_and_Calf_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hamstring_and_Calf_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Kneeling Hip Flexor Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Kneeling Hip Flexor Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Lunge position, push hips forward. Squeeze back glute. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Seated Figure-4 (Pigeon)</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Seated Figure-4 (Pigeon)</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Ankle on opposite knee, lean forward. Opens glutes. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Quad Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Quad Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Pull heel to glute, keep knees together. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Elevated_Quad_Stretch/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
-    <div class="stretch-card">
-      <div class="ex-top"><div class="ex-name">Standing Calf Stretch</div></div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-name">Standing Calf Stretch</div>
+        <div class="ex-sets">30 sec each</div>
+        <span class="ex-i" onclick="ti(this)">i</span>
+      </div>
       <div class="ex-meta">Stagger feet, press back heel into floor. Each side.</div>
-      <div class="str-imgs">
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
-        <span class="arrow">&#8594;</span>
-        <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+      <div class="ex-detail">
+        <div class="ex-imgs">
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg" alt="Start" onerror="this.parentElement.style.display='none'">
+          <span class="arrow">&#8594;</span>
+          <img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg" alt="End" onerror="this.parentElement.style.display='none'">
+        </div>
       </div>
     </div>
 </div>
