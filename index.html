@@ -167,6 +167,20 @@
 
   /* Smooth scrollbar */
   ::-webkit-scrollbar { display: none }
+
+  /* Weight input */
+  .wt { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap }
+  .wt-input {
+    width: 68px; padding: 8px 10px;
+    font-size: 15px; font-weight: 700; color: var(--text);
+    background: var(--card2); border: 1px solid var(--border); border-radius: 8px;
+    text-align: center; font-family: inherit;
+    -webkit-appearance: none; appearance: none;
+  }
+  .wt-input:focus { outline: none; border-color: var(--accent); background: #fff }
+  .wt-input.saved { border-color: var(--accent); color: var(--accent) }
+  .wt-unit { font-size: 13px; font-weight: 600; color: var(--sub) }
+  .wt-sug { font-size: 12px; color: var(--muted); font-weight: 500 }
 </style>
 </head>
 <body>
@@ -1019,6 +1033,52 @@ document.querySelectorAll('.nav a').forEach(l => {
 // Auto-open today's workout on load
 const dayMap = { 0: 'mon', 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'mon' };
 showTab(dayMap[new Date().getDay()]);
+
+// Editable weight inputs — persist to localStorage, keyed by day + exercise name
+(function initWeights() {
+  const STORE_KEY = 'workout.weights.v1';
+  let store = {};
+  try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { store = {}; }
+
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  document.querySelectorAll('.sec.day').forEach(day => {
+    const dayId = day.id;
+    day.querySelectorAll('.ex').forEach(ex => {
+      const meta = ex.querySelector('.ex-meta');
+      const nameEl = ex.querySelector('.ex-name');
+      if (!meta || !nameEl) return;
+      const metaText = meta.textContent.trim();
+      if (!/\blb\b/i.test(metaText)) return; // skip stretches / non-weight meta
+
+      const key = dayId + '::' + nameEl.textContent.trim();
+      const saved = store[key] || '';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'wt';
+      wrap.innerHTML =
+        '<input class="wt-input' + (saved ? ' saved' : '') + '" type="text" inputmode="decimal" ' +
+        'autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="\u2014" ' +
+        'value="' + saved.replace(/"/g, '&quot;') + '">' +
+        '<span class="wt-unit">lb</span>' +
+        '<span class="wt-sug">(suggested: ' + metaText.replace(/</g, '&lt;') + ')</span>';
+
+      const input = wrap.querySelector('.wt-input');
+      const commit = () => {
+        const v = input.value.trim();
+        if (v) { store[key] = v; input.classList.add('saved'); }
+        else { delete store[key]; input.classList.remove('saved'); }
+        save();
+      };
+      input.addEventListener('change', commit);
+      input.addEventListener('blur', commit);
+
+      meta.replaceWith(wrap);
+    });
+  });
+})();
 </script>
 
 </body>
