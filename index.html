@@ -993,6 +993,9 @@
 </div>
 
 <script>
+// Set to the Railway URL once deployed (no trailing slash). Empty = localStorage-only.
+window.API_URL = '';
+
 // Toggle exercise detail panel (only one open at a time)
 function ti(btn) {
   const card = btn.closest('.ex');
@@ -1034,14 +1037,50 @@ document.querySelectorAll('.nav a').forEach(l => {
 const dayMap = { 0: 'mon', 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'mon' };
 showTab(dayMap[new Date().getDay()]);
 
-// Editable weight inputs — persist to localStorage, keyed by day + exercise name
+// Editable weight inputs — persist to localStorage + sync to server if API_URL set
 (function initWeights() {
   const STORE_KEY = 'workout.weights.v1';
+  const API = (window.API_URL || '').replace(/\/$/, '');
   let store = {};
   try { store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { store = {}; }
 
-  function save() {
+  const inputs = new Map(); // key -> input element
+
+  function saveLocal() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  function pushRemote(key, value) {
+    if (!API) return;
+    const url = API + '/weights/' + encodeURIComponent(key);
+    const opts = value == null
+      ? { method: 'DELETE' }
+      : { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ value }) };
+    fetch(url, opts).catch(() => {}); // fire and forget; localStorage is the fallback
+  }
+
+  function setInput(key, value) {
+    const input = inputs.get(key);
+    if (!input) return;
+    input.value = value || '';
+    input.classList.toggle('saved', !!value);
+  }
+
+  async function pullRemote() {
+    if (!API) return;
+    try {
+      const res = await fetch(API + '/weights', { cache: 'no-store' });
+      if (!res.ok) return;
+      const remote = await res.json();
+      // Server is source of truth — merge in any keys we don't have, and overwrite local with remote values.
+      for (const [k, v] of Object.entries(remote)) {
+        if (store[k] !== v) {
+          store[k] = v;
+          setInput(k, v);
+        }
+      }
+      saveLocal();
+    } catch (e) { /* offline is fine */ }
   }
 
   document.querySelectorAll('.sec.day').forEach(day => {
@@ -1066,11 +1105,24 @@ showTab(dayMap[new Date().getDay()]);
         '<span class="wt-sug">(suggested: ' + metaText.replace(/</g, '&lt;') + ')</span>';
 
       const input = wrap.querySelector('.wt-input');
+      inputs.set(key, input);
+
       const commit = () => {
         const v = input.value.trim();
-        if (v) { store[key] = v; input.classList.add('saved'); }
-        else { delete store[key]; input.classList.remove('saved'); }
-        save();
+        const prev = store[key];
+        if (v) {
+          if (prev === v) return;
+          store[key] = v;
+          input.classList.add('saved');
+          saveLocal();
+          pushRemote(key, v);
+        } else {
+          if (prev === undefined) return;
+          delete store[key];
+          input.classList.remove('saved');
+          saveLocal();
+          pushRemote(key, null);
+        }
       };
       input.addEventListener('change', commit);
       input.addEventListener('blur', commit);
@@ -1078,6 +1130,8 @@ showTab(dayMap[new Date().getDay()]);
       meta.replaceWith(wrap);
     });
   });
+
+  pullRemote();
 })();
 </script>
 
